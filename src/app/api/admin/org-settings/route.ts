@@ -7,7 +7,7 @@ import { tenantFilter } from '@/lib/tenant'
 import { OrganizationSettingsSchema } from '@/schemas/settings/organization'
 import { logAudit } from '@/lib/audit'
 import * as Sentry from '@sentry/nextjs'
-import { Prisma } from '@prisma/client'
+import type { Prisma } from '@prisma/client'
 
 export const GET = withTenantContext(async () => {
   try {
@@ -71,13 +71,13 @@ export const PUT = withTenantContext(async (req: Request) => {
     termsUrl: parsed.data.branding?.termsUrl ?? (parsed.data.branding?.legalLinks?.terms ?? existing?.termsUrl ?? null),
     privacyUrl: parsed.data.branding?.privacyUrl ?? (parsed.data.branding?.legalLinks?.privacy ?? existing?.privacyUrl ?? null),
     refundUrl: parsed.data.branding?.refundUrl ?? (parsed.data.branding?.legalLinks?.refund ?? existing?.refundUrl ?? null),
-    legalLinks: parsed.data.branding?.legalLinks === undefined ? undefined : Prisma.JsonNull,
+    legalLinks: parsed.data.branding?.legalLinks === undefined ? undefined : null,
   }
 
   const normalized: Record<string, any> = { ...rawData }
-  if (normalized.address === null) normalized.address = Prisma.JsonNull
-  if (normalized.branding === null) normalized.branding = Prisma.JsonNull
-  if (normalized.legalLinks === null) normalized.legalLinks = Prisma.JsonNull
+  if (normalized.address === null) normalized.address = null
+  if (normalized.branding === null) normalized.branding = null
+  if (normalized.legalLinks === null) normalized.legalLinks = null
 
   const createData = { ...normalized, tenant: { connect: { id: ctx.tenantId } } }
   const updateData = { ...normalized }

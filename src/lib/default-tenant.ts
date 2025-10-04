@@ -1,5 +1,4 @@
 import { randomUUID } from 'crypto'
-import { TenantStatus } from '@prisma/client'
 import prisma from '@/lib/prisma'
 
 let cachedDefaultTenantId: string | null = null
@@ -25,7 +24,7 @@ async function ensureDefaultTenant(): Promise<string> {
       id: generatedId,
       slug: 'primary',
       name: 'Primary Tenant',
-      status: TenantStatus.ACTIVE,
+      status: 'ACTIVE',
     },
   })
   cachedDefaultTenantId = created.id

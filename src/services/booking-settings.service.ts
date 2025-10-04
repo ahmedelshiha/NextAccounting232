@@ -15,11 +15,16 @@ import type {
   BookingSettingsImport,
 } from '@/types/booking-settings.types'
 
+
 import { Prisma } from '@prisma/client'
 
-// Return Prisma.DbNull sentinel used for nullable JSON fields
+// Return Prisma.DbNull sentinel used for nullable JSON fields.
 function getDbNull(): any {
-  return (Prisma as any).DbNull ?? (Prisma as any).NullTypes?.DbNull
+  try {
+    return (Prisma as any).DbNull ?? (Prisma as any).NullTypes?.DbNull ?? null
+  } catch (e) {
+    return null
+  }
 }
 
 /**
